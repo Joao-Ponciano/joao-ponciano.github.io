@@ -54,13 +54,19 @@ h1, h2, h3 { text-wrap: balance }
 /* barra superior */
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule) }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 58px }
-.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 15px/1 var(--display); font-variation-settings: "wdth" 110; letter-spacing: .01em }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 800 17px/1 var(--display); font-variation-settings: "wdth" 110; letter-spacing: .01em }
 .mark i { width: 22px; height: 22px; display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 2px }
 .mark i b { background: var(--cobalt); border-radius: 1px }
 .mark i b:nth-child(1) { height: 40% } .mark i b:nth-child(2) { height: 70% } .mark i b:nth-child(3) { height: 100% }
 nav.links { display: flex; gap: 24px }
-nav.links a { text-decoration: none; font: 500 13px/1 var(--mono); letter-spacing: .04em; color: var(--ink-2) }
+nav.links { align-items: center }
+nav.links a { position: relative; text-decoration: none; font: 600 14px/1 var(--mono); letter-spacing: .03em; color: var(--ink); padding-block: 8px }
+nav.links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--cobalt); transform: scaleX(0); transform-origin: left; transition: transform .2s ease }
 nav.links a:hover { color: var(--cobalt) }
+nav.links a:hover::after { transform: scaleX(1) }
+nav.links a.nav-cta { padding: 9px 16px; border: 1.5px solid var(--cobalt); color: var(--cobalt); border-radius: 999px }
+nav.links a.nav-cta::after { display: none }
+nav.links a.nav-cta:hover { background: var(--cobalt); color: var(--paper) }
 .right { display: flex; align-items: center; gap: 22px }
 .theme { width: 36px; height: 36px; display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 2px; background: var(--sheet); color: var(--ink); cursor: pointer; transition: transform .15s ease, box-shadow .15s ease }
 .theme:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--cobalt) }
@@ -71,7 +77,7 @@ nav.links a:hover { color: var(--cobalt) }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme .sun { display: none } :root:not([data-theme="light"]) .theme .moon { display: block } }
 body { transition: background-color .25s ease, color .25s ease }
 .hero .panel .label { margin: 0 }
-@media (max-width: 600px) { nav.links { gap: 14px } nav.links .opt, nav.links a[href="#experiencia"] { display: none } .right { gap: 14px } .mark { white-space: nowrap } }
+@media (max-width: 600px) { nav.links { gap: 14px } nav.links .opt, nav.links a[href="#experiencia"] { display: none } .right { gap: 10px } .mark { white-space: nowrap; font-size: 15px } nav.links a { font-size: 13px } nav.links a.nav-cta { padding: 7px 11px } .bar .wrap { gap: 10px } }
 
 /* abertura */
 .hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: end; padding-block: 72px 64px }
@@ -229,7 +235,9 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
 :root[data-palette="verde"][data-theme="dark"] body{background-image:linear-gradient(180deg,rgba(30,215,96,.20),rgba(30,215,96,0) 560px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:100% 100%,28px 28px,28px 28px;background-repeat:no-repeat,repeat,repeat}
 :root[data-palette="verde"][data-theme="dark"] .btn.solid{background:var(--cobalt);border-color:var(--cobalt);color:#0B0B0B;border-radius:999px}
 :root[data-palette="verde"][data-theme="dark"] .btn{border-radius:999px}
-:root[data-palette="verde"][data-theme="dark"] .bar{background:rgba(18,18,18,.82)}
+:root[data-palette="verde"][data-theme="dark"] .bar{background:rgba(14,30,20,.55);border-bottom-color:rgba(30,215,96,.22)}
+:root[data-palette="verde"][data-theme="dark"] nav.links a.nav-cta:hover{color:#0B0B0B}
+:root[data-palette="verde"][data-theme="dark"] .theme{border-radius:999px;border-color:rgba(255,255,255,.5);background:transparent}
 :root[data-palette="verde"][data-theme="dark"] .ticker{background:var(--cobalt);color:#0B0B0B;border-color:var(--cobalt)}
 :root[data-palette="verde"][data-theme="dark"] .ticker span::after{color:#0B0B0B}
 :root[data-palette="verde"][data-theme="dark"] .contact{background:#181818;border-color:#2A2A2A}
@@ -245,7 +253,7 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
       <a href="#projetos">projetos</a>
       <a href="#experiencia">experiência</a>
       <a class="opt" href="#competencias">competências</a>
-      <a href="#contato">contato</a>
+      <a class="nav-cta" href="#contato">contato</a>
     </nav>
     <button class="theme" type="button" id="theme" aria-label="Alternar tema claro e escuro" title="Alternar tema">
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
