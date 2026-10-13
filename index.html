@@ -9,297 +9,423 @@
 <meta property="og:description" content="Painéis e modelos de dados usados por 14 cooperativas de crédito e mais de 400 usuários.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: uma coluna larga, como a página de um relatório; os números de impacto funcionam como a linha de KPIs de um painel */
+/* Conceito: papel milimetrado de analista. Tipografia larga e pesada para os números, mono para rótulos e eixos,
+   como um relatório gerencial que virou página. Cobalto domina; laranja só marca ganho. */
 :root {
-  --bg: #F3F5F8; --surface: #FFFFFF; --line: #E3E7ED; --fg: #1C2430; --muted: #5B6573; --soft: #A7B0BC;
-  --accent: #2F5BEA; --accent-soft: #E7EDFD; --accent-ink: #2449C4;
-  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --paper: #F2F4F7; --sheet: #FFFFFF; --ink: #121821; --ink-2: #4A5463; --ink-3: #8A94A3;
+  --rule: #DDE2EA; --grid: rgba(47, 91, 234, .07);
+  --cobalt: #2F5BEA; --cobalt-deep: #1C3BA8; --cobalt-wash: #E6ECFD; --signal: #D9691A;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) { :root {
-  --bg: #11151B; --surface: #181E27; --line: #28303C; --fg: #E6EAF0; --muted: #9AA4B2; --soft: #6B7584;
-  --accent: #7D97F2; --accent-soft: #1E2944; --accent-ink: #A9BBF7; color-scheme: dark } }
+  --paper: #0D1117; --sheet: #141A23; --ink: #EEF1F6; --ink-2: #A8B1BF; --ink-3: #6E7887;
+  --rule: #252D39; --grid: rgba(125, 151, 242, .07);
+  --cobalt: #7D97F2; --cobalt-deep: #A9BBF7; --cobalt-wash: #18213A; --signal: #F0954F; color-scheme: dark } }
 
 * { box-sizing: border-box }
 html { scroll-behavior: smooth }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } }
-body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased }
-a { color: var(--accent-ink) }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px }
-.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px }
-h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance }
-p { margin: 0 }
+body {
+  margin: 0; color: var(--ink); font: 17px/1.65 var(--body); -webkit-font-smoothing: antialiased;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; border-radius: 3px }
+h1, h2, h3, p { margin: 0 }
+h1, h2, h3 { text-wrap: balance }
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: 22px }
+.mono { font-family: var(--mono) }
+.label { font: 500 12px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3) }
 
-/* topo */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line) }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px }
-.brand { font-weight: 600; text-decoration: none; color: var(--fg); white-space: nowrap }
-.nav { display: flex; gap: 22px; flex-wrap: wrap }
-.nav a { color: var(--muted); text-decoration: none; font-size: 15px }
-.nav a:hover { color: var(--fg) }
-@media (max-width: 560px) { .nav { gap: 14px } .nav a.opt { display: none } }
+/* barra superior */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule) }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 58px }
+.mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 700 15px/1 var(--display); font-variation-settings: "wdth" 110; letter-spacing: .01em }
+.mark i { width: 22px; height: 22px; display: grid; grid-template-columns: repeat(3, 1fr); align-items: end; gap: 2px }
+.mark i b { background: var(--cobalt); border-radius: 1px }
+.mark i b:nth-child(1) { height: 40% } .mark i b:nth-child(2) { height: 70% } .mark i b:nth-child(3) { height: 100% }
+nav.links { display: flex; gap: 24px }
+nav.links a { text-decoration: none; font: 500 13px/1 var(--mono); letter-spacing: .04em; color: var(--ink-2) }
+nav.links a:hover { color: var(--cobalt) }
+@media (max-width: 600px) { nav.links { gap: 14px } nav.links .opt { display: none } }
 
 /* abertura */
-.hero { padding-block: 64px 40px; display: grid; gap: 22px }
-.eyebrow { font: 500 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink) }
-.hero h1 { font-size: clamp(32px, 5.2vw, 52px); font-weight: 700; letter-spacing: -0.02em; max-width: 18ch }
-.hero p.lede { font-size: clamp(17px, 2vw, 19px); color: var(--muted); max-width: 62ch }
-.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); text-decoration: none; font-weight: 500; font-size: 15px; cursor: pointer; font-family: inherit }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff }
-@media (prefers-color-scheme: dark) { .btn.primary { color: #11151B } }
-.btn:hover { border-color: var(--soft) }
+.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: end; padding-block: 72px 64px }
+@media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 36px; padding-block: 48px 48px } }
+.hero .label { color: var(--cobalt); margin-bottom: 22px; display: flex; align-items: center; gap: 10px }
+.hero .label::before { content: ""; width: 28px; height: 2px; background: var(--cobalt) }
+.hero h1 {
+  font-family: var(--display); font-weight: 800; font-variation-settings: "wdth" 118;
+  font-size: clamp(44px, 7.4vw, 96px); line-height: .94; letter-spacing: -0.025em;
+}
+.hero h1 .thin { display: block; font-weight: 400; font-variation-settings: "wdth" 75; color: var(--ink-2); font-size: .5em; letter-spacing: 0; margin-top: 10px }
+.hero p.lede { margin-top: 28px; font-size: clamp(17px, 1.7vw, 19px); color: var(--ink-2); max-width: 54ch }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 18px; border: 1.5px solid var(--ink); border-radius: 2px; background: transparent; color: var(--ink); text-decoration: none; font: 600 14px/1 var(--mono); letter-spacing: .03em; cursor: pointer; transition: transform .15s ease, background .15s ease, color .15s ease }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--cobalt) }
+.btn.solid { background: var(--ink); color: var(--paper) }
+.btn .arr { transition: transform .15s ease }
+.btn:hover .arr { transform: translateX(3px) }
 
-/* KPIs */
-.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding-bottom: 56px }
-@media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
-.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 6px; align-content: start }
-.kpi .label { font-size: 13px; color: var(--muted) }
-.kpi .value { font: 600 clamp(24px, 3.2vw, 30px)/1.1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: -0.01em }
-.kpi .note { font-size: 13px; color: var(--muted) }
+/* painel de KPIs da abertura */
+.panel { background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 2px; box-shadow: 8px 8px 0 var(--cobalt); position: relative }
+.panel-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid var(--rule) }
+.panel-head .live { display: inline-flex; align-items: center; gap: 7px; font: 500 11px/1 var(--mono); color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase }
+.panel-head .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--signal) }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.tile { padding: 18px; border-right: 1px solid var(--rule); display: grid; gap: 6px; align-content: start }
+.tile:last-child { border-right: 0 }
+.tile .num { font: 800 clamp(34px, 4vw, 46px)/1 var(--display); font-variation-settings: "wdth" 112; letter-spacing: -0.02em; font-variant-numeric: tabular-nums }
+.tile .cap { font-size: 13px; color: var(--ink-2); line-height: 1.35 }
+.chart { padding: 18px 18px 20px; border-top: 1px solid var(--rule); display: grid; gap: 12px }
+.chart-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.chart-title strong { font: 600 14px/1.3 var(--body) }
+.delta { font: 600 13px/1 var(--mono); color: var(--signal) }
+.row { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; align-items: center; gap: 10px; font: 500 12px/1 var(--mono); color: var(--ink-2) }
+.row .track { height: 16px; background: var(--paper); border-radius: 1px; overflow: hidden }
+.row .fill { height: 100%; background: var(--ink-3); width: var(--w); transform-origin: left; animation: grow 1.1s cubic-bezier(.2,.7,.2,1) .5s both }
+.row.now .fill { background: var(--cobalt) }
+.row .v { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums }
+.axis { display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; gap: 10px; font: 400 10.5px/1 var(--mono); color: var(--ink-3) }
+.axis span { display: flex; justify-content: space-between } .axis i { font-style: normal }
+@keyframes grow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+@media (max-width: 480px) { .tile { padding: 14px 12px } .tile .cap { font-size: 12px } }
+
+/* faixa de ferramentas */
+.ticker { border-block: 1.5px solid var(--ink); background: var(--ink); color: var(--paper); overflow: hidden }
+.ticker-track { display: flex; gap: 0; width: max-content; animation: slide 38s linear infinite }
+.ticker span { font: 600 14px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 15px 22px; white-space: nowrap; display: inline-flex; align-items: center; gap: 22px }
+.ticker span::after { content: "◆"; font-size: 9px; color: var(--cobalt) }
+@keyframes slide { to { transform: translateX(-50%) } }
 
 /* seções */
-section.block { padding-block: 48px; border-top: 1px solid var(--line); display: grid; gap: 24px }
-.sec-head { display: grid; gap: 8px }
-.sec-head h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 600; letter-spacing: -0.01em }
-.sec-head p { color: var(--muted); max-width: 62ch }
+section.sec { padding-block: 88px 24px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px }
+@media (max-width: 900px) { section.sec { grid-template-columns: 1fr; gap: 22px; padding-block: 64px 8px } }
+.sec-side { position: sticky; top: 90px; align-self: start; display: grid; gap: 10px }
+@media (max-width: 900px) { .sec-side { position: static } }
+.sec-side h2 { font: 800 30px/1 var(--display); font-variation-settings: "wdth" 115; letter-spacing: -0.015em }
+.sec-side p { font-size: 15px; color: var(--ink-2) }
+.sec-main { min-width: 0; display: grid; gap: 20px }
 
 /* projeto */
-.project { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden }
-.embed { position: relative; aspect-ratio: 16 / 9.6; max-width: 100%; background: var(--bg); border-bottom: 1px solid var(--line) }
-.embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0 }
-.project-body { padding: 24px; display: grid; gap: 20px }
-.project-title { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px }
-.project-title h3 { font-size: 22px; font-weight: 600 }
+.report { background: var(--sheet); border: 1.5px solid var(--ink); border-radius: 2px }
+.report-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1.5px solid var(--ink); font: 500 12px/1 var(--mono); color: var(--ink-2) }
+.report-top b { color: var(--ink); font-weight: 600 }
+.frame { position: relative; aspect-ratio: 16 / 9.6; max-width: 100%; background: repeating-linear-gradient(135deg, var(--paper) 0 12px, var(--sheet) 12px 24px) }
+.frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0 }
+.report-body { padding: 28px; display: grid; gap: 22px }
+.report-body h3 { font: 800 clamp(26px, 3vw, 34px)/1.05 var(--display); font-variation-settings: "wdth" 112; letter-spacing: -0.015em }
+.report-body > p { color: var(--ink-2); max-width: 62ch }
 .tags { display: flex; flex-wrap: wrap; gap: 6px }
-.tag { font: 500 12px/1 var(--mono); padding: 6px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink) }
-.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px }
-@media (max-width: 720px) { .cols { grid-template-columns: 1fr } }
-.cols h4 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
-ul.clean { margin: 0; padding-left: 18px; display: grid; gap: 6px }
-.project-foot { display: flex; flex-wrap: wrap; gap: 10px }
+.tag { font: 500 12px/1 var(--mono); padding: 7px 10px; border: 1px solid var(--cobalt); color: var(--cobalt-deep); background: var(--cobalt-wash); border-radius: 2px }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule) }
+@media (max-width: 720px) { .two { grid-template-columns: 1fr } }
+.two > div { padding: 20px 20px 4px 0 }
+.two > div + div { padding-left: 20px; border-left: 1px solid var(--rule) }
+@media (max-width: 720px) { .two > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule) } }
+.two .label { margin-bottom: 12px }
+ul.ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
+ul.ticks li { position: relative; padding-left: 22px; font-size: 15.5px }
+ul.ticks li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 2px; background: var(--cobalt) }
 
-/* destaques do trabalho */
-.cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
-@media (max-width: 860px) { .cases { grid-template-columns: 1fr } }
-.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 8px; align-content: start }
-.case h3 { font-size: 17px; font-weight: 600 }
-.case p { color: var(--muted); font-size: 15px }
-.case .stack { font: 400 12.5px/1.5 var(--mono); color: var(--fg); opacity: .8 }
+/* casos internos */
+.cases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1.5px solid var(--ink); background: var(--sheet) }
+@media (max-width: 900px) { .cases { grid-template-columns: 1fr } }
+.case { padding: 24px; display: grid; gap: 12px; align-content: start; border-right: 1px solid var(--rule); transition: background .2s ease }
+.case:last-child { border-right: 0 }
+@media (max-width: 900px) { .case { border-right: 0; border-bottom: 1px solid var(--rule) } .case:last-child { border-bottom: 0 } }
+.case:hover { background: var(--cobalt-wash) }
+.case .big { font: 800 40px/1 var(--display); font-variation-settings: "wdth" 115; color: var(--cobalt); letter-spacing: -0.02em }
+.case h3 { font: 700 19px/1.2 var(--display); font-variation-settings: "wdth" 105 }
+.case p { font-size: 15px; color: var(--ink-2) }
+.case .stack { font: 500 12px/1.5 var(--mono); color: var(--ink-3); padding-top: 4px; border-top: 1px dashed var(--rule) }
 
 /* experiência */
-.job { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px }
-@media (max-width: 720px) { .job { grid-template-columns: 1fr; gap: 10px } }
-.job .when { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px }
-.job h3 { font-size: 19px; font-weight: 600 }
-.job .org { color: var(--accent-ink); font-weight: 500; margin: 2px 0 12px }
+.job-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink) }
+.job-head h3 { font: 800 clamp(22px, 2.6vw, 28px)/1.1 var(--display); font-variation-settings: "wdth" 110 }
+.job-head .org { color: var(--cobalt-deep); font-weight: 600 }
+.job-head .when { font: 500 13px/1 var(--mono); color: var(--ink-2) }
+ol.ledger { list-style: none; margin: 0; padding: 0; counter-reset: l }
+ol.ledger li { counter-increment: l; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 16px }
+ol.ledger li::before { content: counter(l, decimal-leading-zero); font: 500 12px/1.9 var(--mono); color: var(--ink-3) }
+ol.ledger li strong { font-weight: 600 }
 
 /* competências */
-.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 @media (max-width: 720px) { .skills { grid-template-columns: 1fr } }
-.skill { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; align-content: start }
-.skill h3 { font-size: 15px; font-weight: 600 }
+.skill { background: var(--sheet); border: 1px solid var(--rule); border-top: 3px solid var(--cobalt); padding: 18px 20px; display: grid; gap: 12px; align-content: start }
+.skill h3 { font: 700 16px/1.2 var(--display); font-variation-settings: "wdth" 105 }
 .chips { display: flex; flex-wrap: wrap; gap: 6px }
-.chip { font-size: 14px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg) }
+.chip { font: 500 13px/1 var(--mono); padding: 7px 10px; background: var(--paper); border: 1px solid var(--rule); border-radius: 2px }
 
 /* formação */
-.edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px }
+.edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
 @media (max-width: 720px) { .edu { grid-template-columns: 1fr } }
-.edu h3 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px }
-.edu ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px }
+.edu > div { background: var(--sheet); border: 1px solid var(--rule); padding: 20px; display: grid; gap: 14px; align-content: start }
+.edu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px }
 .edu li b { font-weight: 600 }
-.edu li span { color: var(--muted) }
+.edu li span { color: var(--ink-2); font-size: 15px }
 
 /* contato */
-.contact { display: flex; flex-wrap: wrap; align-items: center; gap: 12px }
-.mail { font: 500 15px/1 var(--mono); padding: 11px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); user-select: all }
-.copied { color: var(--muted); font-size: 14px }
-footer { padding-block: 32px 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line) }
+.contact { margin-top: 96px; background: #121821; color: #EEF1F6; border: 1px solid var(--rule); border-radius: 2px; padding: clamp(28px, 5vw, 56px); display: grid; gap: 24px; position: relative; overflow: hidden }
+.contact::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 260px; height: 260px; background-image: linear-gradient(rgba(125,151,242,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(125,151,242,.18) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none }
+.contact h2 { font: 800 clamp(32px, 5vw, 58px)/1 var(--display); font-variation-settings: "wdth" 118; letter-spacing: -0.02em; max-width: 16ch }
+.contact p { color: #B9C2D0; max-width: 52ch }
+.contact .row2 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; position: relative; z-index: 1 }
+.mail { font: 500 15px/1 var(--mono); padding: 14px 16px; border: 1.5px solid #3A4454; border-radius: 2px; user-select: all; color: #EEF1F6 }
+.contact .btn { border-color: #EEF1F6; color: #EEF1F6 }
+.contact .btn.solid { background: #EEF1F6; color: #121821 }
+.contact .btn:hover { box-shadow: 3px 3px 0 #7D97F2 }
+.copied { font: 500 13px/1 var(--mono); color: #B9C2D0 }
+footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--ink-3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px }
+
+/* entrada */
+.rise { animation: rise .7s cubic-bezier(.2,.7,.2,1) both }
+.d1 { animation-delay: .05s } .d2 { animation-delay: .15s } .d3 { animation-delay: .25s } .d4 { animation-delay: .35s }
+@keyframes rise { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto }
+  .rise, .row .fill, .ticker-track { animation: none !important }
+}
 </style>
 </head>
 <body>
 
-<header class="top">
+<header class="bar">
   <div class="wrap">
-    <a class="brand" href="#inicio">João Ponciano</a>
-    <nav class="nav" aria-label="Seções">
-      <a href="#projetos">Projetos</a>
-      <a href="#experiencia">Experiência</a>
-      <a class="opt" href="#competencias">Competências</a>
-      <a href="#contato">Contato</a>
+    <a class="mark" href="#topo"><i aria-hidden="true"><b></b><b></b><b></b></i>João Ponciano</a>
+    <nav class="links" aria-label="Seções">
+      <a href="#projetos">projetos</a>
+      <a href="#experiencia">experiência</a>
+      <a class="opt" href="#competencias">competências</a>
+      <a href="#contato">contato</a>
     </nav>
   </div>
 </header>
 
-<main id="inicio">
+<main id="topo">
   <div class="wrap">
     <section class="hero">
-      <div class="eyebrow">Analista de BI e Dados · Setor financeiro cooperativo</div>
-      <h1>João Batista de Oliveira Ponciano</h1>
-      <p class="lede">Desenvolvo e mantenho os painéis e modelos de dados usados por 14 cooperativas de crédito. Atuo do levantamento com a área de negócio até a entrega: tratamento e modelagem com Power Query, SQL, Databricks e Microsoft Fabric, medidas em DAX, controle de acesso com RLS e painéis que as pessoas usam no dia a dia.</p>
-      <div class="links">
-        <a class="btn primary" href="#projetos">Ver projetos</a>
-        <a class="btn" href="https://www.linkedin.com/in/jo%C3%A3o-batista-de-oliveira-ponciano-518384276" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" href="https://github.com/Joao-Ponciano" target="_blank" rel="noopener">GitHub</a>
+      <div>
+        <div class="label rise d1">Analista de BI e Dados · Setor financeiro cooperativo</div>
+        <h1 class="rise d2">João Batista de Oliveira Ponciano<span class="thin">Do dado bruto ao painel de cada dia.</span></h1>
+        <p class="lede rise d3">Desenvolvo e mantenho os painéis e modelos de dados de 14 cooperativas de crédito. Trabalho do levantamento com a área de negócio até a entrega: Power Query, SQL, Databricks e Microsoft Fabric no tratamento, DAX nas medidas e RLS no controle de acesso.</p>
+        <div class="cta rise d4">
+          <a class="btn solid" href="#projetos">Ver projetos <span class="arr">→</span></a>
+          <a class="btn" href="https://www.linkedin.com/in/jo%C3%A3o-batista-de-oliveira-ponciano-518384276" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/Joao-Ponciano" target="_blank" rel="noopener">GitHub</a>
+        </div>
       </div>
-    </section>
 
-    <div class="kpis" role="list">
-      <div class="kpi" role="listitem"><span class="label">Cooperativas atendidas</span><span class="value">14</span><span class="note">em diferentes regiões do país</span></div>
-      <div class="kpi" role="listitem"><span class="label">Usuários dos painéis</span><span class="value">400+</span><span class="note">com acesso controlado por RLS</span></div>
-      <div class="kpi" role="listitem"><span class="label">Tratamento do balancete</span><span class="value">2 h → 6 min</span><span class="note">95% menos tempo</span></div>
-      <div class="kpi" role="listitem"><span class="label">Tabelas mapeadas</span><span class="value">98</span><span class="note">em 10 painéis de negócio</span></div>
+      <aside class="panel rise d3" aria-label="Resumo em números">
+        <div class="panel-head"><span class="label">Visão geral</span><span class="live">em produção</span></div>
+        <div class="tiles">
+          <div class="tile"><span class="num" data-count="14">14</span><span class="cap">cooperativas atendidas</span></div>
+          <div class="tile"><span class="num" data-count="400" data-suffix="+">400+</span><span class="cap">usuários nos painéis</span></div>
+          <div class="tile"><span class="num" data-count="98">98</span><span class="cap">tabelas mapeadas no DW</span></div>
+        </div>
+        <div class="chart">
+          <div class="chart-title"><strong>Tratamento do balancete contábil</strong><span class="delta">−95% de tempo</span></div>
+          <div class="row"><span>Antes</span><div class="track"><div class="fill" style="--w:100%"></div></div><span class="v">120 min</span></div>
+          <div class="row now"><span>Depois</span><div class="track"><div class="fill" style="--w:5%"></div></div><span class="v">6 min</span></div>
+          <div class="axis" aria-hidden="true"><span></span><span><i>0</i><i>60</i><i>120 min</i></span><span></span></div>
+        </div>
+      </aside>
+    </section>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Power BI</span><span>DAX</span><span>Power Query</span><span>SQL</span><span>Databricks</span><span>PySpark</span><span>Microsoft Fabric</span><span>Lakehouse</span><span>Row-Level Security</span><span>Modelagem dimensional</span>
+      <span>Power BI</span><span>DAX</span><span>Power Query</span><span>SQL</span><span>Databricks</span><span>PySpark</span><span>Microsoft Fabric</span><span>Lakehouse</span><span>Row-Level Security</span><span>Modelagem dimensional</span>
     </div>
+  </div>
 
-    <section class="block" id="projetos">
-      <div class="sec-head">
+  <div class="wrap">
+    <section class="sec" id="projetos">
+      <div class="sec-side">
+        <span class="label">/ projetos</span>
         <h2>Projetos</h2>
-        <p>Painéis com dados de exemplo, publicados para navegação. Use os filtros e os botões de navegação dentro do painel.</p>
+        <p>Painéis com dados de exemplo, publicados para você navegar. Use os filtros e os botões dentro do painel.</p>
       </div>
-
-      <article class="project">
-        <div class="embed">
-          <iframe title="Painel Análise de Vendas" loading="lazy" allowfullscreen
-            src="https://app.powerbi.com/view?r=eyJrIjoiMzUwNzU4NWQtYmYxOC00ZWIyLWI5YmUtODg5ZDgwYzQxN2QyIiwidCI6ImViYjIzNTE2LTc1MWEtNDZmNi05OGYwLTFjZDZhZTc1N2ZkNCJ9"></iframe>
-        </div>
-        <div class="project-body">
-          <div class="project-title">
-            <h3>Análise de Vendas</h3>
+      <div class="sec-main">
+        <article class="report">
+          <div class="report-top"><span><b>Análise de Vendas</b> · Power BI</span><span>publicado na web</span></div>
+          <div class="frame">
+            <iframe title="Painel Análise de Vendas" loading="lazy" allowfullscreen
+              src="https://app.powerbi.com/view?r=eyJrIjoiMzUwNzU4NWQtYmYxOC00ZWIyLWI5YmUtODg5ZDgwYzQxN2QyIiwidCI6ImViYjIzNTE2LTc1MWEtNDZmNi05OGYwLTFjZDZhZTc1N2ZkNCJ9"></iframe>
+          </div>
+          <div class="report-body">
             <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Parâmetros de campo</span><span class="tag">Modelagem dimensional</span></div>
-          </div>
-          <p>Painel comercial de uma distribuidora de alimentos e bebidas, com faturamento, margem bruta e volume por produto, fornecedor e vendedor.</p>
-          <div class="cols">
-            <div>
-              <h4>Perguntas que responde</h4>
-              <ul class="clean">
-                <li>Como faturamento, margem e quantidade estão em relação ao ano anterior e à meta?</li>
-                <li>Quais produtos e vendedores mais contribuem para o resultado?</li>
-                <li>De onde vem o faturamento quando se desce por linha, fornecedor, grupo e vendedor?</li>
-              </ul>
+            <h3>Análise de Vendas</h3>
+            <p>Painel comercial de uma distribuidora de alimentos e bebidas, com faturamento, margem bruta e volume por produto, fornecedor e vendedor.</p>
+            <div class="two">
+              <div>
+                <div class="label">Perguntas que responde</div>
+                <ul class="ticks">
+                  <li>Como faturamento, margem e quantidade estão em relação ao ano anterior e à meta?</li>
+                  <li>Quais produtos e vendedores mais contribuem para o resultado?</li>
+                  <li>De onde vem o faturamento quando se desce por linha, fornecedor, grupo e vendedor?</li>
+                </ul>
+              </div>
+              <div>
+                <div class="label">O que construí</div>
+                <ul class="ticks">
+                  <li>Seletor que troca o painel inteiro entre Faturamento, Margem e Quantidade.</li>
+                  <li>Cards de KPI com melhor mês, variação contra o ano anterior e atingimento da meta.</li>
+                  <li>Comparação mês a mês com o ano anterior e árvore de decomposição.</li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <h4>O que construí</h4>
-              <ul class="clean">
-                <li>Seletor que troca o painel inteiro entre Faturamento, Margem e Quantidade.</li>
-                <li>Cards de KPI com melhor mês, variação contra o ano anterior e atingimento da meta.</li>
-                <li>Comparação mês a mês com o ano anterior e árvore de decomposição por várias dimensões.</li>
-              </ul>
-            </div>
+            <div><a class="btn" href="https://app.powerbi.com/view?r=eyJrIjoiMzUwNzU4NWQtYmYxOC00ZWIyLWI5YmUtODg5ZDgwYzQxN2QyIiwidCI6ImViYjIzNTE2LTc1MWEtNDZmNi05OGYwLTFjZDZhZTc1N2ZkNCJ9" target="_blank" rel="noopener">Abrir em tela cheia <span class="arr">↗</span></a></div>
           </div>
-          <div class="project-foot">
-            <a class="btn" href="https://app.powerbi.com/view?r=eyJrIjoiMzUwNzU4NWQtYmYxOC00ZWIyLWI5YmUtODg5ZDgwYzQxN2QyIiwidCI6ImViYjIzNTE2LTc1MWEtNDZmNi05OGYwLTFjZDZhZTc1N2ZkNCJ9" target="_blank" rel="noopener">Abrir em tela cheia</a>
-          </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </section>
 
-    <section class="block" id="trabalho">
-      <div class="sec-head">
+    <section class="sec" id="trabalho">
+      <div class="sec-side">
+        <span class="label">/ em produção</span>
         <h2>No trabalho</h2>
-        <p>Entregas em produção na CrediSIS. Os painéis são internos, então descrevo o problema, a solução e as ferramentas.</p>
+        <p>Entregas na CrediSIS. Os painéis são internos, então descrevo o problema, a solução e as ferramentas.</p>
       </div>
-      <div class="cases">
-        <div class="case">
-          <h3>DRE e indicadores financeiros</h3>
-          <p>Estrutura sistêmica sobre o plano de contas, com uma base única que todas as cooperativas usam para acompanhar resultados.</p>
-          <span class="stack">Power BI · DAX · modelagem dimensional</span>
-        </div>
-        <div class="case">
-          <h3>Indicadores de mercado</h3>
-          <p>Painel construído de ponta a ponta no Microsoft Fabric, com notebooks de carga incremental integrando 8 fontes públicas (Bacen, IBGE, CEPEA, Conab).</p>
-          <span class="stack">Fabric · PySpark · Delta · DAX com HTML/SVG</span>
-        </div>
-        <div class="case">
-          <h3>Automação do balancete</h3>
-          <p>Tratamento dos balancetes contábeis automatizado: o processo caiu de cerca de 2 horas para 6 minutos.</p>
-          <span class="stack">Power Query · SQL · Databricks</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="block" id="experiencia">
-      <div class="sec-head"><h2>Experiência</h2></div>
-      <div class="job">
-        <div class="when">dez/2022 – atual</div>
-        <div>
-          <h3>Analista de Estratégia de Negócios</h3>
-          <div class="org">CrediSIS</div>
-          <ul class="clean">
-            <li>Desenvolvo e mantenho painéis Power BI compartilhados com 14 cooperativas e mais de 400 usuários.</li>
-            <li>Desenvolvi a DRE e os indicadores financeiros em nível sistêmico, com modelagem sobre o plano de contas e indicadores calculados em DAX.</li>
-            <li>Automatizei o tratamento dos balancetes contábeis, reduzindo o processo de cerca de 2 horas para 6 minutos.</li>
-            <li>Faço a gestão do controle de acesso por RLS, para que cada usuário veja apenas os dados da sua cooperativa e unidade.</li>
-            <li>Desenvolvi um painel de gestão de acessos para acompanhar o uso de cada painel por usuários e cooperativas.</li>
-            <li>Construí no Microsoft Fabric o painel de indicadores de mercado, com notebooks PySpark de carga incremental integrando 8 fontes públicas.</li>
-            <li>Migrei transformações de Power Query para Spark SQL no Databricks e montei a matriz de barramento do data warehouse, mapeando 98 tabelas fato e dimensão em 10 painéis.</li>
-            <li>Estruturei a gestão de projetos da área no Jira, com fluxos automatizados para três tipos de projeto e documentação no Confluence.</li>
-            <li>Conduzo treinamentos em Power BI e as lives de lançamento de novos painéis para as cooperativas.</li>
-          </ul>
+      <div class="sec-main">
+        <div class="cases">
+          <div class="case">
+            <span class="big">14</span>
+            <h3>DRE e indicadores financeiros</h3>
+            <p>Estrutura sistêmica sobre o plano de contas: uma base única que todas as cooperativas usam para acompanhar resultados.</p>
+            <span class="stack">Power BI · DAX · modelagem semântica</span>
+          </div>
+          <div class="case">
+            <span class="big">8</span>
+            <h3>Indicadores de mercado</h3>
+            <p>Painel de ponta a ponta no Microsoft Fabric, com notebooks de carga incremental integrando fontes públicas como Bacen, IBGE, CEPEA e Conab.</p>
+            <span class="stack">Fabric · PySpark · Delta · DAX com HTML/SVG</span>
+          </div>
+          <div class="case">
+            <span class="big">6 min</span>
+            <h3>Automação do balancete</h3>
+            <p>O tratamento dos balancetes contábeis, que levava cerca de 2 horas, passou a rodar em 6 minutos.</p>
+            <span class="stack">Power Query · SQL · Databricks</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="competencias">
-      <div class="sec-head"><h2>Competências</h2></div>
-      <div class="skills">
-        <div class="skill"><h3>BI e visualização</h3><div class="chips"><span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query (M)</span><span class="chip">Row-Level Security</span><span class="chip">Data Storytelling</span></div></div>
-        <div class="skill"><h3>Dados e engenharia</h3><div class="chips"><span class="chip">SQL</span><span class="chip">Databricks</span><span class="chip">Spark SQL</span><span class="chip">PySpark</span><span class="chip">Microsoft Fabric</span><span class="chip">Python</span><span class="chip">ETL</span></div></div>
-        <div class="skill"><h3>Arquitetura e governança</h3><div class="chips"><span class="chip">Data Lake (Lakehouse, Delta)</span><span class="chip">Data Warehouse</span><span class="chip">Modelagem dimensional e semântica</span><span class="chip">Governança de dados</span></div></div>
-        <div class="skill"><h3>Ferramentas</h3><div class="chips"><span class="chip">Excel</span><span class="chip">PowerPoint</span><span class="chip">Jira</span><span class="chip">Confluence</span></div></div>
+    <section class="sec" id="experiencia">
+      <div class="sec-side">
+        <span class="label">/ experiência</span>
+        <h2>Experiência</h2>
+      </div>
+      <div class="sec-main">
+        <div class="job-head">
+          <div><h3>Analista de Estratégia de Negócios</h3><span class="org">CrediSIS</span></div>
+          <span class="when">dez/2022 – atual</span>
+        </div>
+        <ol class="ledger">
+          <li><span>Desenvolvo e mantenho painéis Power BI compartilhados com <strong>14 cooperativas</strong> e <strong>mais de 400 usuários</strong>.</span></li>
+          <li><span>Desenvolvi a DRE e os indicadores financeiros em nível sistêmico, com modelagem sobre o plano de contas e indicadores em DAX.</span></li>
+          <li><span>Automatizei o tratamento dos balancetes contábeis: de cerca de <strong>2 horas para 6 minutos</strong>.</span></li>
+          <li><span>Faço a gestão do controle de acesso por RLS, para que cada usuário veja apenas os dados da sua cooperativa e unidade.</span></li>
+          <li><span>Desenvolvi um painel de gestão de acessos para acompanhar o uso de cada painel por usuários e cooperativas.</span></li>
+          <li><span>Construí no Microsoft Fabric o painel de indicadores de mercado, com notebooks PySpark de carga incremental integrando <strong>8 fontes públicas</strong>.</span></li>
+          <li><span>Migrei transformações de Power Query para Spark SQL no Databricks e montei a matriz de barramento do data warehouse, com <strong>98 tabelas</strong> em 10 painéis.</span></li>
+          <li><span>Estruturei a gestão de projetos da área no Jira, com fluxos automatizados para três tipos de projeto e documentação no Confluence.</span></li>
+          <li><span>Conduzo treinamentos em Power BI e as lives de lançamento de novos painéis para as cooperativas.</span></li>
+        </ol>
       </div>
     </section>
 
-    <section class="block" id="formacao">
-      <div class="sec-head"><h2>Formação e certificações</h2></div>
-      <div class="edu">
-        <div>
-          <h3>Formação</h3>
-          <ul><li><b>Ciência de Dados</b> <span>· Estácio · 2023–2025</span></li></ul>
-        </div>
-        <div>
-          <h3>Certificações · Xperiun, 2024</h3>
-          <ul>
-            <li><b>Power BI Specialist</b></li>
-            <li><b>SQL Avançado para Analistas e Consultores de BI</b></li>
-            <li><b>Data Analyst Professional</b></li>
-          </ul>
+    <section class="sec" id="competencias">
+      <div class="sec-side">
+        <span class="label">/ competências</span>
+        <h2>Competências</h2>
+      </div>
+      <div class="sec-main">
+        <div class="skills">
+          <div class="skill"><h3>BI e visualização</h3><div class="chips"><span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query (M)</span><span class="chip">Row-Level Security</span><span class="chip">Data Storytelling</span></div></div>
+          <div class="skill"><h3>Dados e engenharia</h3><div class="chips"><span class="chip">SQL</span><span class="chip">Databricks</span><span class="chip">Spark SQL</span><span class="chip">PySpark</span><span class="chip">Microsoft Fabric</span><span class="chip">Python</span><span class="chip">ETL</span></div></div>
+          <div class="skill"><h3>Arquitetura e governança</h3><div class="chips"><span class="chip">Data Lake</span><span class="chip">Lakehouse · Delta</span><span class="chip">Data Warehouse</span><span class="chip">Modelagem dimensional e semântica</span><span class="chip">Governança de dados</span></div></div>
+          <div class="skill"><h3>Ferramentas</h3><div class="chips"><span class="chip">Excel</span><span class="chip">PowerPoint</span><span class="chip">Jira</span><span class="chip">Confluence</span></div></div>
         </div>
       </div>
     </section>
 
-    <section class="block" id="contato">
-      <div class="sec-head">
-        <h2>Contato</h2>
-        <p>Ji-Paraná, RO. O jeito mais rápido de falar comigo é por e-mail ou pelo LinkedIn.</p>
+    <section class="sec" id="formacao">
+      <div class="sec-side">
+        <span class="label">/ formação</span>
+        <h2>Formação</h2>
       </div>
-      <div class="contact">
+      <div class="sec-main">
+        <div class="edu">
+          <div>
+            <span class="label">Graduação</span>
+            <ul><li><b>Ciência de Dados</b><br><span>Estácio · 2023–2025</span></li></ul>
+          </div>
+          <div>
+            <span class="label">Certificações · Xperiun · 2024</span>
+            <ul>
+              <li><b>Power BI Specialist</b></li>
+              <li><b>SQL Avançado para Analistas e Consultores de BI</b></li>
+              <li><b>Data Analyst Professional</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contato">
+      <span class="label" style="color:#7D97F2">/ contato</span>
+      <h2>Vamos conversar sobre dados.</h2>
+      <p>Moro em Ji-Paraná, RO. O jeito mais rápido de falar comigo é por e-mail ou pelo LinkedIn.</p>
+      <div class="row2">
         <span class="mail" id="mail">joaobatistaponcio@gmail.com</span>
-        <button class="btn" type="button" id="copy">Copiar e-mail</button>
-        <a class="btn" href="https://www.linkedin.com/in/jo%C3%A3o-batista-de-oliveira-ponciano-518384276" target="_blank" rel="noopener">LinkedIn</a>
+        <button class="btn solid" type="button" id="copy">Copiar e-mail</button>
+        <a class="btn" href="https://www.linkedin.com/in/jo%C3%A3o-batista-de-oliveira-ponciano-518384276" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
         <span class="copied" id="copied" aria-live="polite"></span>
       </div>
     </section>
+
+    <footer><span>João Batista de Oliveira Ponciano</span><span>Analista de BI e Dados</span></footer>
   </div>
 </main>
 
-<footer><div class="wrap">João Batista de Oliveira Ponciano · Analista de BI e Dados</div></footer>
-
 <script>
-document.getElementById('copy').addEventListener('click', function () {
-  var text = document.getElementById('mail').textContent.trim();
-  var out = document.getElementById('copied');
-  function fallback() {
-    var r = document.createRange(); r.selectNodeContents(document.getElementById('mail'));
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-    out.textContent = 'E-mail selecionado. Use Ctrl+C para copiar.';
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var end = +el.dataset.count, suf = el.dataset.suffix || '', t0 = null, dur = 1100;
+      function step(t) {
+        if (!t0) t0 = t;
+        var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(end * e) + (p === 1 ? suf : '');
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
   }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function () { out.textContent = 'E-mail copiado.'; }, fallback);
-  } else { fallback(); }
-});
+  document.getElementById('copy').addEventListener('click', function () {
+    var mail = document.getElementById('mail'), out = document.getElementById('copied');
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(mail);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      out.textContent = 'Selecionado. Use Ctrl+C.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mail.textContent.trim()).then(function () { out.textContent = 'E-mail copiado.'; }, fallback);
+    } else { fallback(); }
+  });
+})();
 </script>
 </body>
 </html>
