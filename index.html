@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-palette="verde">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,7 +7,8 @@
 <meta name="description" content="Portfólio de João Ponciano, analista de BI e dados no setor financeiro cooperativo. Power BI, DAX, SQL, Databricks e Microsoft Fabric.">
 <meta property="og:title" content="João Ponciano · Analista de BI e Dados">
 <meta property="og:description" content="Painéis e modelos de dados usados por 14 cooperativas de crédito e mais de 400 usuários.">
-<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>(function(){var t=null;try{t=localStorage.getItem('tema')}catch(e){}document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')})()</script>
+<meta name="theme-color" content="#121212">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -201,14 +202,14 @@ ol.ledger li strong { font-weight: 600 }
 
 /* contato */
 .contact { margin-top: 96px; background: #121821; color: #EEF1F6; border: 1px solid var(--rule); border-radius: 2px; padding: clamp(28px, 5vw, 56px); display: grid; gap: 24px; position: relative; overflow: hidden }
-.contact::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 260px; height: 260px; background-image: linear-gradient(rgba(125,151,242,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(125,151,242,.18) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none }
+.contact::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 260px; height: 260px; background-image: linear-gradient(rgba(30,215,96,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(30,215,96,.14) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none }
 .contact h2 { font: 800 clamp(32px, 5vw, 58px)/1 var(--display); font-variation-settings: "wdth" 118; letter-spacing: -0.02em; max-width: 16ch }
 .contact p { color: #B9C2D0; max-width: 52ch }
 .contact .row2 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; position: relative; z-index: 1 }
 .mail { font: 500 15px/1 var(--mono); padding: 14px 16px; border: 1.5px solid #3A4454; border-radius: 2px; user-select: all; color: #EEF1F6 }
 .contact .btn { border-color: #EEF1F6; color: #EEF1F6 }
 .contact .btn.solid { background: #EEF1F6; color: #121821 }
-.contact .btn:hover { box-shadow: 3px 3px 0 #7D97F2 }
+.contact .btn:hover { box-shadow: 3px 3px 0 #1ED760 }
 .copied { font: 500 13px/1 var(--mono); color: #B9C2D0 }
 footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--ink-3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px }
 
@@ -220,6 +221,18 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
   html { scroll-behavior: auto }
   .rise, .row .fill, .ticker-track { animation: none !important }
 }
+
+/* paleta verde */
+:root[data-palette="verde"]{--cobalt:#15803D;--cobalt-deep:#166534;--cobalt-wash:#E3F5E9;--signal:#2F5BEA;--grid:rgba(21,128,61,.07)}
+@media (prefers-color-scheme: dark){:root[data-palette="verde"]:not([data-theme="light"]){--paper:#121212;--sheet:#181818;--ink:#FFFFFF;--ink-2:#B3B3B3;--ink-3:#7A7A7A;--rule:#2A2A2A;--cobalt:#1ED760;--cobalt-deep:#7FE0A3;--cobalt-wash:#12301E;--signal:#F5A524;--grid:rgba(30,215,96,.045);color-scheme:dark}}
+:root[data-palette="verde"][data-theme="dark"]{--paper:#121212;--sheet:#181818;--ink:#FFFFFF;--ink-2:#B3B3B3;--ink-3:#7A7A7A;--rule:#2A2A2A;--cobalt:#1ED760;--cobalt-deep:#7FE0A3;--cobalt-wash:#12301E;--signal:#F5A524;--grid:rgba(30,215,96,.045);color-scheme:dark}
+:root[data-palette="verde"][data-theme="dark"] body{background-image:linear-gradient(180deg,rgba(30,215,96,.20),rgba(30,215,96,0) 560px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:100% 100%,28px 28px,28px 28px;background-repeat:no-repeat,repeat,repeat}
+:root[data-palette="verde"][data-theme="dark"] .btn.solid{background:var(--cobalt);border-color:var(--cobalt);color:#0B0B0B;border-radius:999px}
+:root[data-palette="verde"][data-theme="dark"] .btn{border-radius:999px}
+:root[data-palette="verde"][data-theme="dark"] .bar{background:rgba(18,18,18,.82)}
+:root[data-palette="verde"][data-theme="dark"] .ticker{background:var(--cobalt);color:#0B0B0B;border-color:var(--cobalt)}
+:root[data-palette="verde"][data-theme="dark"] .ticker span::after{color:#0B0B0B}
+:root[data-palette="verde"][data-theme="dark"] .contact{background:#181818;border-color:#2A2A2A}
 </style>
 </head>
 <body>
@@ -423,7 +436,7 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
     </section>
 
     <section class="contact" id="contato">
-      <span class="label" style="color:#7D97F2">/ contato</span>
+      <span class="label" style="color:#1ED760">/ contato</span>
       <h2>Vamos conversar sobre dados.</h2>
       <p>Moro em Ji-Paraná, RO. O jeito mais rápido de falar comigo é por e-mail ou pelo LinkedIn.</p>
       <div class="row2">
