@@ -232,6 +232,17 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
 :root[data-palette="petroleo"]{--cobalt:#0B5F75;--cobalt-deep:#084657;--cobalt-wash:#E2F1F5;--signal:#D9691A;--grid:rgba(11,95,117,.07)}
 @media (prefers-color-scheme: dark){:root[data-palette="petroleo"]:not([data-theme="light"]){--cobalt:#5BC0D8;--cobalt-deep:#9ADBEA;--cobalt-wash:#0E2329;--signal:#F0954F;--grid:rgba(91,192,216,.07)}}
 :root[data-palette="petroleo"][data-theme="dark"]{--cobalt:#5BC0D8;--cobalt-deep:#9ADBEA;--cobalt-wash:#0E2329;--signal:#F0954F;--grid:rgba(91,192,216,.07)}
+
+:root[data-palette="verde"]{--cobalt:#15803D;--cobalt-deep:#166534;--cobalt-wash:#E3F5E9;--signal:#2F5BEA;--grid:rgba(21,128,61,.07)}
+@media (prefers-color-scheme: dark){:root[data-palette="verde"]:not([data-theme="light"]){--paper:#121212;--sheet:#181818;--ink:#FFFFFF;--ink-2:#B3B3B3;--ink-3:#7A7A7A;--rule:#2A2A2A;--cobalt:#1ED760;--cobalt-deep:#7FE0A3;--cobalt-wash:#12301E;--signal:#F5A524;--grid:rgba(30,215,96,.045);color-scheme:dark}}
+:root[data-palette="verde"][data-theme="dark"]{--paper:#121212;--sheet:#181818;--ink:#FFFFFF;--ink-2:#B3B3B3;--ink-3:#7A7A7A;--rule:#2A2A2A;--cobalt:#1ED760;--cobalt-deep:#7FE0A3;--cobalt-wash:#12301E;--signal:#F5A524;--grid:rgba(30,215,96,.045);color-scheme:dark}
+:root[data-palette="verde"][data-theme="dark"] body{background-image:linear-gradient(180deg,rgba(30,215,96,.20),rgba(30,215,96,0) 560px),linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:100% 100%,28px 28px,28px 28px;background-repeat:no-repeat,repeat,repeat}
+:root[data-palette="verde"][data-theme="dark"] .btn.solid{background:var(--cobalt);border-color:var(--cobalt);color:#0B0B0B;border-radius:999px}
+:root[data-palette="verde"][data-theme="dark"] .btn{border-radius:999px}
+:root[data-palette="verde"][data-theme="dark"] .bar{background:rgba(18,18,18,.82)}
+:root[data-palette="verde"][data-theme="dark"] .ticker{background:var(--cobalt);color:#0B0B0B;border-color:var(--cobalt)}
+:root[data-palette="verde"][data-theme="dark"] .ticker span::after{color:#0B0B0B}
+:root[data-palette="verde"][data-theme="dark"] .contact{background:#181818;border-color:#2A2A2A}
 .picker{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--sheet);border:1.5px solid var(--ink);padding:8px 10px;box-shadow:4px 4px 0 var(--cobalt);max-width:calc(100% - 32px)}
 .picker span{font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-right:4px}
 .picker button{display:inline-flex;align-items:center;gap:7px;font:500 12px/1 var(--mono);padding:7px 9px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer;border-radius:2px}
@@ -500,10 +511,11 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
   <button type="button" data-p="ambar" aria-pressed="false"><i style="background:#B4530A"></i>Âmbar</button>
   <button type="button" data-p="vinho" aria-pressed="false"><i style="background:#9F1D3F"></i>Vinho</button>
   <button type="button" data-p="petroleo" aria-pressed="false"><i style="background:#0B5F75"></i>Petróleo</button>
+  <button type="button" data-p="verde" aria-pressed="false"><i style="background:#1ED760"></i>Verde</button>
 </div>
 <script>
 document.querySelectorAll('.picker button').forEach(function(b){b.addEventListener('click',function(){
-  var p=b.dataset.p; if(p) document.documentElement.setAttribute('data-palette',p); else document.documentElement.removeAttribute('data-palette');
+  var p=b.dataset.p; if(p) document.documentElement.setAttribute('data-palette',p); else document.documentElement.removeAttribute('data-palette'); if(p==='verde') document.documentElement.setAttribute('data-theme','dark');
   document.querySelectorAll('.picker button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
 });});
 </script>
