@@ -7,6 +7,7 @@
 <meta name="description" content="Portfólio de João Ponciano, analista de BI e dados no setor financeiro cooperativo. Power BI, DAX, SQL, Databricks e Microsoft Fabric.">
 <meta property="og:title" content="João Ponciano · Analista de BI e Dados">
 <meta property="og:description" content="Painéis e modelos de dados usados por 14 cooperativas de crédito e mais de 400 usuários.">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -22,10 +23,14 @@
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root {
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --paper: #0D1117; --sheet: #141A23; --ink: #EEF1F6; --ink-2: #A8B1BF; --ink-3: #6E7887;
   --rule: #252D39; --grid: rgba(125, 151, 242, .07);
   --cobalt: #7D97F2; --cobalt-deep: #A9BBF7; --cobalt-wash: #18213A; --signal: #F0954F; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0D1117; --sheet: #141A23; --ink: #EEF1F6; --ink-2: #A8B1BF; --ink-3: #6E7887;
+  --rule: #252D39; --grid: rgba(125, 151, 242, .07);
+  --cobalt: #7D97F2; --cobalt-deep: #A9BBF7; --cobalt-wash: #18213A; --signal: #F0954F; color-scheme: dark }
 
 * { box-sizing: border-box }
 html { scroll-behavior: smooth }
@@ -55,7 +60,17 @@ h1, h2, h3 { text-wrap: balance }
 nav.links { display: flex; gap: 24px }
 nav.links a { text-decoration: none; font: 500 13px/1 var(--mono); letter-spacing: .04em; color: var(--ink-2) }
 nav.links a:hover { color: var(--cobalt) }
-@media (max-width: 600px) { nav.links { gap: 14px } nav.links .opt { display: none } }
+.right { display: flex; align-items: center; gap: 22px }
+.theme { width: 36px; height: 36px; display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 2px; background: var(--sheet); color: var(--ink); cursor: pointer; transition: transform .15s ease, box-shadow .15s ease }
+.theme:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--cobalt) }
+.theme svg { width: 17px; height: 17px }
+.theme .moon { display: none }
+:root[data-theme="dark"] .theme .sun { display: none }
+:root[data-theme="dark"] .theme .moon { display: block }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme .sun { display: none } :root:not([data-theme="light"]) .theme .moon { display: block } }
+body { transition: background-color .25s ease, color .25s ease }
+.hero .panel .label { margin: 0 }
+@media (max-width: 600px) { nav.links { gap: 14px } nav.links .opt, nav.links a[href="#experiencia"] { display: none } .right { gap: 14px } .mark { white-space: nowrap } }
 
 /* abertura */
 .hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: end; padding-block: 72px 64px }
@@ -202,12 +217,18 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="#topo"><i aria-hidden="true"><b></b><b></b><b></b></i>João Ponciano</a>
+    <div class="right">
     <nav class="links" aria-label="Seções">
       <a href="#projetos">projetos</a>
       <a href="#experiencia">experiência</a>
       <a class="opt" href="#competencias">competências</a>
       <a href="#contato">contato</a>
     </nav>
+    <button class="theme" type="button" id="theme" aria-label="Alternar tema claro e escuro" title="Alternar tema">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    </button>
+    </div>
   </div>
 </header>
 
@@ -414,6 +435,17 @@ footer { padding-block: 28px 44px; font: 500 12px/1.4 var(--mono); color: var(--
       requestAnimationFrame(step);
     });
   }
+  var root = document.documentElement, btn = document.getElementById('theme');
+  function isDark() {
+    var t = root.getAttribute('data-theme');
+    if (t) return t === 'dark';
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  btn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('tema', next); } catch (e) {}
+  });
   document.getElementById('copy').addEventListener('click', function () {
     var mail = document.getElementById('mail'), out = document.getElementById('copied');
     function fallback() {
